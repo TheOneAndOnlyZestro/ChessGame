@@ -4,5 +4,9 @@ public:
 impl(){}
 public:
 std::string m_Name;
-unsigned int m_ID;
 };
+
+Chess::Piece::Piece(const std::string& Name){
+    m_impl = new impl();
+    m_impl->m_Name = Name;
+}
