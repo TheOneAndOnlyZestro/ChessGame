@@ -19,7 +19,7 @@ const std::function<VMath::Vector()>& Move){
 
 void Chess::Piece::MakeMove()
 {
-    m_impl->m_Position = m_impl->m_Move();
+    m_impl->m_Position += m_impl->m_Move();
 }
 
 Chess::Piece::Piece(const Piece& rtside)
