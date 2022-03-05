@@ -6,20 +6,27 @@ impl(){}
 public:
 std::string m_Name;
 VMath::Vector m_Position;
-std::function<VMath::Vector ()> m_Move;
+std::function<std::vector<VMath::Vector>(const VMath::Vector&)> m_CheckoutFunction;
 };
 
 Chess::Piece::Piece(const std::string& Name, const VMath::Vector& Position,
-const std::function<VMath::Vector()>& Move){
+std::function<std::vector<VMath::Vector>(const VMath::Vector&)> CheckoutFunction){
     m_impl = new impl();
     m_impl->m_Name = Name;
     m_impl->m_Position = Position;
-    m_impl->m_Move = Move;
+    m_impl->m_CheckoutFunction = CheckoutFunction;
 }
 
-void Chess::Piece::MakeMove()
+std::vector<VMath::Vector> Chess::Piece::CheckoutPossibleMoves()
 {
-    m_impl->m_Position += m_impl->m_Move();
+	std::vector<VMath::Vector> vec = m_impl->m_CheckoutFunction(m_impl->m_Position);
+   #ifdef DEBUG_MODE
+  	for(unsigned int i =0; i< vec.size(); i++){
+		std::cout << vec[i].x << " , " << vec[i].y << std::endl;
+	} 
+
+   #endif
+	return vec;
 }
 
 Chess::Piece::Piece(const Piece& rtside)
@@ -37,10 +44,3 @@ Chess::Piece& Chess::Piece::operator=(const Piece& rtside)
     return *this;
 }
 
-#ifdef DEBUG_MODE
-    void Chess::Piece::Debug(){
-        std::cout << "<--------     CHESS PIECE DATA    --------> \n" <<
-        "NAME:      " << m_impl->m_Name << "    \n"<<
-        "POSITION:      "<<"( " << m_impl->m_Position.x << " , " << m_impl->m_Position.y<< " )"<<"\n";
-    }
-#endif

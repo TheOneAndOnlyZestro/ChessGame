@@ -1,6 +1,7 @@
 #pragma once
-#include "Math/Vector.h"
+#include "Vector.h"
 
+#include <vector>
 #include <iostream>
 #include <string>
 #include <functional>
@@ -10,18 +11,15 @@ namespace Chess{
     class Piece{
         public:
         Piece(const std::string& Name, const VMath::Vector& Position,
-        const std::function<VMath::Vector()>& Move);
+        const std::function<std::vector<VMath::Vector>(const VMath::Vector&)> CheckoutFunction);
 
-        void MakeMove();
+	std::vector<VMath::Vector> CheckoutPossibleMoves();
 
         //Rule Of Three
         ~Piece();
         Piece& operator=(const Piece& rtside);
         Piece(const Piece& rtside);
 
-        #ifdef DEBUG_MODE
-            void Debug();
-        #endif
         private:
         class impl;
         impl* m_impl;
